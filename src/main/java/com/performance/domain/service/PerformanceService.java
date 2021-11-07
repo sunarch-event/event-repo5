@@ -177,14 +177,14 @@ public class PerformanceService {
         
         List<UserMaster> userMasterList = new ArrayList<UserMaster>();
         
-        for(UserInfo userInfo : userInfoList) {
+        for(int i = 0; i < userInfoList.size(); i++) {
             UserMaster userMaster = new UserMaster();
-            userMaster.setId(userInfo.getId());
-            userMaster.setLastName(userInfo.getLastName());
-            userMaster.setFirstName(userInfo.getFirstName());
-            userMaster.setPrefectures(userInfo.getPrefectures());
-            userMaster.setCity(userInfo.getCity());
-            userMaster.setBloodType(userInfo.getBloodType());
+            userMaster.setId(userInfoList.get(i).getId());
+            userMaster.setLastName(userInfoList.get(i).getLastName());
+            userMaster.setFirstName(userInfoList.get(i).getFirstName());
+            userMaster.setPrefectures(userInfoList.get(i).getPrefectures());
+            userMaster.setCity(userInfoList.get(i).getCity());
+            userMaster.setBloodType(userInfoList.get(i).getBloodType());
             for(int j = 0; j < userHobbyList.size(); j++) {
                 if(userMaster.getId().equals(userHobbyList.get(j).getId())) {
                     userMaster.setHobby1(userHobbyList.get(j).getHobby1());
