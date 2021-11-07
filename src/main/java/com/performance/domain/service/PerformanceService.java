@@ -2,7 +2,10 @@ package com.performance.domain.service;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,15 +13,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-
 import com.performance.domain.dao.UserDao;
 import com.performance.domain.entity.UserHobby;
 import com.performance.domain.entity.UserInfo;
 import com.performance.domain.entity.UserMaster;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PerformanceService {
@@ -76,17 +79,8 @@ public class PerformanceService {
         /** 変更不可 **/
         
         // CSVを取得・CSVファイルをDBに登録する
-        //ファイル読み込みで使用する3つのクラス
-        FileReader fr = null;
-        BufferedReader br = null;
         List<String> csvFile = new ArrayList<String>();
-        try {
-
-            //読み込みファイルのインスタンス生成
-            //ファイル名を指定する
-            fr = new FileReader(new File("data/userInfo.csv"));
-            br = new BufferedReader(fr);
-            
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/userInfo.csv"), StandardCharsets.UTF_8));){            
 
             //読み込み行
             String readLine;
@@ -107,18 +101,14 @@ public class PerformanceService {
             }
         } catch (Exception e) {
             log.info("csv read error", e);
-        } finally {
-            try {
-                br.close();
-            } catch (Exception e) {
-            }
         }
 
         try {
             int i = 0;
             for(String line : csvFile) {
                 //カンマで分割した内容を配列に格納する
-                String[] data = line.split(",", -1);
+            	Pattern ptn = Pattern.compile(",", -1);
+                String[] data = ptn.split(line);
                 
                 //データ内容をコンソールに表示する
                 log.info("-------------------------------");
@@ -300,16 +290,8 @@ public class PerformanceService {
         }
         
         // CSVを取得・CSVファイルをDBに登録する
-        //ファイル読み込みで使用する3つのクラス
-        FileReader fr = null;
-        BufferedReader br = null;
         List<String> csvFile = new ArrayList<String>();
-        try {
-
-            //読み込みファイルのインスタンス生成
-            //ファイル名を指定する
-            fr = new FileReader(new File("data/assertionData.csv"));
-            br = new BufferedReader(fr);
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/assertionData.csv"), StandardCharsets.UTF_8));){
 
             //読み込み行
             String readLine;
@@ -319,16 +301,13 @@ public class PerformanceService {
             }
         } catch (Exception e) {
             log.info("csv read error", e);
-        } finally {
-            try {
-                br.close();
-            } catch (Exception e) {
-            }
         }
+
         for(String line : csvFile) {
             boolean exsits = false;
             UserMaster userMaster = new UserMaster();
-            String[] data = line.split(",", -1);
+        	Pattern ptn = Pattern.compile(",", -1);
+            String[] data = ptn.split(line);
 
             userMaster.setLastName(data[0]);
             userMaster.setFirstName(data[1]);
