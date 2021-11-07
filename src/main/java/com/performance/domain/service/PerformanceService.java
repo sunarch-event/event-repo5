@@ -124,23 +124,26 @@ public class PerformanceService {
                 log.debug("趣味3:" + data[7]);
                 log.debug("趣味4:" + data[8]);
                 log.debug("趣味5:" + data[9]);
-                UserInfo userInfo = new UserInfo();
-                UserHobby userHobby = new UserHobby();
-
-                userInfo.setLastName(data[0]);
-                userInfo.setFirstName(data[1]);
-                userInfo.setPrefectures(data[2]);
-                userInfo.setCity(data[3]);
-                userInfo.setBloodType(data[4]);
-                userHobby.setHobby1(data[5]);
-                userHobby.setHobby2(data[6]);
-                userHobby.setHobby3(data[7]);
-                userHobby.setHobby4(data[8]);
-                userHobby.setHobby5(data[9]);
+                
                 // 特定の件のみインサートするようにする
                 Pattern pattern = Pattern.compile(".新潟県,上越市.");
                 Matcher matcher = pattern.matcher(line);
                 if(matcher.find()) {
+                	
+                    UserInfo userInfo = new UserInfo();
+                    UserHobby userHobby = new UserHobby();
+
+                    userInfo.setLastName(data[0]);
+                    userInfo.setFirstName(data[1]);
+                    userInfo.setPrefectures(data[2]);
+                    userInfo.setCity(data[3]);
+                    userInfo.setBloodType(data[4]);
+                    userHobby.setHobby1(data[5]);
+                    userHobby.setHobby2(data[6]);
+                    userHobby.setHobby3(data[7]);
+                    userHobby.setHobby4(data[8]);
+                    userHobby.setHobby5(data[9]);
+                    
                     // 行数のインクリメント
                     i++;
                     log.info("データ書き込み" + i + "件目");
